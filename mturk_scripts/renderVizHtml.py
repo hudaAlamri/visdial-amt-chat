@@ -10,7 +10,7 @@ import MySQLdb as mdb
 
 NUM_HITS_VIZ = 100
 
-config = json.load(open('/path/to/visdial-amt-chat/mturk_scripts/config.json', 'r')) # TODO
+config = json.load(open('/home/hudaalamri/visdial-amt-chat/mturk_scripts/config.json', 'r')) # TODO
 
 FROM_TIMESTAMP = config['from_timestamp']
 
@@ -64,5 +64,5 @@ for i in hits:
 
 html += "</tbody></table></div></div></div></body></html>"
 
-with open('/path/to/visdial-amt-chat/mturk_scripts/viz/hits_%d.html' % FROM_TIMESTAMP, 'w') as tf: # TODO, also create `viz` folder
+with open('/home/hudaalamri/visdial-amt-chat/mturk_scripts/viz/hits_%d.html' % FROM_TIMESTAMP, 'w') as tf: # TODO, also create `viz` folder
     tf.write(html)

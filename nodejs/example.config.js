@@ -7,8 +7,8 @@ config.db = {
 }
 
 config.redis = {
-    "port": 6380,
-    "pass": "ENTER_PASSWORD_HERE",
+    "port": 6379,
+    "pass": "Awaaqa09876",
     "list": "visdial_queue"
 }
 

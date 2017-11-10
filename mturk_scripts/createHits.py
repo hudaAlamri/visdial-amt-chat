@@ -4,29 +4,37 @@ from boto.mturk.price import Price
 from boto.mturk.qualification import *
 from boto.mturk.connection import MTurkRequestError
 
-ACCESS_ID = 'AMT_ACCESS_ID' # TODO
-SECRET_KEY = 'AMT_SECRET_KEY' # TODO
+
+
 HOST = 'mechanicalturk.amazonaws.com'
 SANDBOX_HOST = 'mechanicalturk.sandbox.amazonaws.com'
 mtc = None
 is_prod = True # TODO
 NUM_HITS = 6000
 
+
+
+region_name = 'us-east-1'
+
+ACCESS_ID = 'AKIAJBRWS2NLYBYXVACQ'
+SECRET_KEY = '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'
+endpoint_url = 'https://mturk-requester-sandbox.us-east-1.amazonaws.com'
+
 def getConnection(is_prod = False):
     if is_prod:
         mtc = MTurkConnection(aws_access_key_id=ACCESS_ID,
                       aws_secret_access_key=SECRET_KEY,
-                      host=HOST)
+                      host=SANDBOX_HOST)
     else:
         mtc = MTurkConnection(aws_access_key_id=ACCESS_ID,
                       aws_secret_access_key=SECRET_KEY,
                       host=SANDBOX_HOST)
 
-    print mtc.get_account_balance()
+    #print mtc.get_account_balance()
     return mtc
 
-url = "https://ENTER_HIT_URL/" # TODO
-title = "Live Q/A about an Image (With Captions)"
+url = "https://143.215.204.118:5000" # TODO
+title = "Live Q/A about a Video (With Captions)"
 description = "Ask or Answer questions about an image with a fellow Turker."
 keywords = ["image", "chat", "question", "answer"]
 frame_height = "1200"
@@ -34,16 +42,17 @@ amountToPay = 0.15
 
 def create_new_hit_type(is_prod = False):
     if is_prod:
-        quals = Qualifications()
-        quals.add(NumberHitsApprovedRequirement('GreaterThanOrEqualTo',
-                                                        5000,
-                                                        required_to_preview=False))
-        quals.add(PercentAssignmentsApprovedRequirement('GreaterThanOrEqualTo',
-                                                        95,
-                                                        required_to_preview=False))
-        quals.add(LocaleRequirement('EqualTo',
-                                    'US',
-                                    required_to_preview=False))
+        #quals = Qualifications()
+        quals = None
+        #quals.add(NumberHitsApprovedRequirement('GreaterThanOrEqualTo',
+        #                                               5000,
+        #                                                required_to_preview=False))
+        #quals.add(PercentAssignmentsApprovedRequirement('GreaterThanOrEqualTo',
+        #                                                95,
+        #                                               required_to_preview=False))
+        #quals.add(LocaleRequirement('EqualTo',
+        #                            'US',
+        #                           required_to_preview=False))
     else:
         quals = None
     new_hit_type = mtc.register_hit_type(title=title,
@@ -94,7 +103,9 @@ def cancel_hits():
 
 def get_results():
     result_hit = []
+
     all_hits = mtc.get_all_hits()
+
     for it in all_hits:
         id = it.HITId
         result_hit.append(mtc.get_assignments(id))

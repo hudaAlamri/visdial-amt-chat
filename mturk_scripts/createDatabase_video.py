@@ -26,17 +26,19 @@ class BaseModel(Model):
     class Meta:
         database=database
 
-class Image(BaseModel):
-    imageId = CharField(primary_key=True, index=True)
-    imageName = CharField()
-    imageType = CharField()
-    imageSubType = CharField()
+class Video(BaseModel):
+    youtube_id = CharField(primary_key=True, index=True)
+    label = CharField()
+    time_start = CharField()
+    time_end = CharField()
+    split = charField()
+    is_cc = charField()
     numHitsFinished = CharField()
 
-class Caption(BaseModel):
+class Label(BaseModel):
     captionId = CharField(primary_key=True, index=True)
     caption = CharField()
-    image = ForeignKeyField(Image)
+    video = ForeignKeyField(Video)
 
 class AMTHits(BaseModel):
     id = CharField(primary_key=True)
@@ -50,8 +52,8 @@ class AMTHits(BaseModel):
     bonus = IntegerField(default=0)
     hitIden = CharField()
     comment = CharField()
-    image = ForeignKeyField(Image)
-    caption = ForeignKeyField(Caption)
+    video = ForeignKeyField(Video)
+    label = ForeignKeyField(label)
     created_at = IntegerField(default=int(datetime.now().strftime('%s')))
     completed_at = IntegerField(default=0)
 
@@ -65,7 +67,7 @@ class Feedback(BaseModel):
 class Question(BaseModel):
     id = CharField(primary_key=True, index=True)
     question = CharField()
-    image = ForeignKeyField(Image)
+    youtube_id = ForeignKeyField(youtube_id)
     annotationId = ForeignKeyField(AMTHits)
     sequenceId = CharField()
     socketId = CharField()
@@ -77,7 +79,7 @@ class Answer(BaseModel):
     id = CharField(primary_key=True, index=True)
     answer = CharField()
     question = ForeignKeyField(Question)
-    image = ForeignKeyField(Image)
+    video = ForeignKeyField(Video)
     annotationId = ForeignKeyField(AMTHits)
     sequenceId = CharField()
     socketId = CharField()
@@ -88,10 +90,10 @@ class Answer(BaseModel):
 def createDatabaseTables():
     database.connect()
 
-    if not Image.table_exists():
-        database.create_table(Image)
-    if not Caption.table_exists():
-        database.create_table(Caption)
+    if not Video.table_exists():
+        database.create_table(Video)
+    if not Label.table_exists():
+        database.create_table(Label)
     if not AMTHits.table_exists():
         database.create_table(AMTHits)
     if not Feedback.table_exists():
@@ -104,14 +106,14 @@ def createDatabaseTables():
 
 def fillPilotData():
 
-    split = 'train2014' # TODO
-    print 'Loading caption ' + split + ' data...'
+    split = 'train' # TODO
+    print 'Loading Label' + split + ' data...'
 
-    cocoPath = '/home/hudaalamri/visdial-amt-chat/nodejs/static/train2014/' # TODO
-    captionsPath = '/home/hudaalamri/visdial-amt-chat/nodejs/static/annotations/' # TODO
+    kineticsPath =  '/media/hudaalamri/450e4e47-0b67-4b43-b098-505e454af9f6/kinetics/kinetics_train/videos/kinetics_train/'# TODO
+    labelPath  = '/media/hudaalamri/450e4e47-0b67-4b43-b098-505e454af9f6/kinetics/kinetics_train/'# TODO
 
-    f1 = open(os.path.join(captionsPath, 'captions_' + split + '.json'))
-    captionData = json.loads(f1.read())
+    f1 = open(os.path.join(labelPath, 'kinetics_' + split + '.json'))
+    labelData = json.loads(f1.read())
     f1.close()
     imdir='COCO_%s_%012d.jpg'
     subtype = split

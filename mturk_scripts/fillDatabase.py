@@ -21,8 +21,8 @@ createDatabaseTables()
 # TODO:
 # 1) Create a symbolic link from `static/dataset` to `/path/to/mscoco/images/`
 # 2) Create folder `static/annotations` and download COCO caption files (captions_train2014.json, etc)
-# fillPilotData()
+fillPilotData()
 
 # This pushes 3000 images from the 'image' table with numHitsFinished == 0 to the redis queue 'visdial_queue'
-# createRedisQueue()
+createRedisQueue()
 

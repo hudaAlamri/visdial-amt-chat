@@ -273,7 +273,7 @@
             $('#instructions_content').attr('class', 'content active');
         }
         if ( is_preview == false) {
-            socket = io.connect(host,{path: '/SUB_FOLDER/socket.io/', transports: ["websocket"]}); // TODO
+            socket = io.connect('http://143.215.204.118:5000/'); // TODO
             $('#preview_message').toggle();
             console.log('should toggle');
         }
